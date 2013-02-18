@@ -1,19 +1,10 @@
 package websync.actions;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.cdt.core.model.CModelException;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.core.model.ICElementVisitor;
-import org.eclipse.cdt.core.model.ICModel;
-import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.core.model.IMethodDeclaration;
-import org.eclipse.cdt.internal.core.model.Structure;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -22,13 +13,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.IHttpViewManager;
 import websync.http.interfaces.uri.THttpCapabiliesFactory;
 import websync.http.interfaces.uri.THttpCapability;
-import websync.http.interfaces.uri.THttpGetKey;
 import websync.http.interfaces.uri.THttpCapability.ICapabilityHandler;
+import websync.http.interfaces.uri.THttpGetKey;
+import websync.utils.Base64;
 
 public class THttpProjectExplorerView implements IHttpView {
 
@@ -98,7 +91,16 @@ public class THttpProjectExplorerView implements IHttpView {
 				return "";
 			}
 		}));
-
+		result.add(THttpCapabiliesFactory.VIEW_NEW_FOLDER(new ICapabilityHandler() {
+			@Override
+			public String handle(IHttpView view, List<THttpGetKey> keys) throws Exception {
+				if (view instanceof THttpProjectExplorerView) {
+					THttpProjectExplorerView v = (THttpProjectExplorerView)view;
+					return v.NewFolder(keys);
+				}
+				return "";
+			}
+		}));
 		return result;
 	}
 
@@ -157,7 +159,55 @@ public class THttpProjectExplorerView implements IHttpView {
 		try {
 			if (file.exists()) {
 				if (file.getFileExtension().equals("umlsync")) {
-					file.delete(true, null);
+					file.delete(IResource.FORCE | IResource.ALWAYS_DELETE_PROJECT_CONTENT, new IProgressMonitor() {
+
+						@Override
+						public void beginTask(String name, int totalWork) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void done() {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void internalWorked(double work) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public boolean isCanceled() {
+							// TODO Auto-generated method stub
+							return false;
+						}
+
+						@Override
+						public void setCanceled(boolean value) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void setTaskName(String name) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void subTask(String name) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void worked(int work) {
+							// TODO Auto-generated method stub
+							
+						}});
 				}
 			}
 		} catch (CoreException e) {
@@ -198,10 +248,11 @@ public class THttpProjectExplorerView implements IHttpView {
 		
 		try {
 			if (file.exists()) {
-				file.delete(true, null);
+				//file.delete(true, null);
+				file.setContents(new ByteArrayInputStream(diagram.getBytes()), IResource.FORCE, null);
+			} else {
+     		file.create(new ByteArrayInputStream(diagram.getBytes()), 0, null);
 			}
-     		file.create(new ByteArrayInputStream(diagram.getBytes()), 0, null);	
-			
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -232,13 +283,27 @@ public class THttpProjectExplorerView implements IHttpView {
 		IFile file = project.getFile(path.substring(splitedPath[0].length() +1));
 
 		try {
-			if (file.exists()) {
-				if (file.getFileExtension().equals("umlsync")) {
+			if (file != null && file.exists()) {
+				
+				if (file.getFileExtension().equals("umlsync") || file.getFileExtension().equals("json")) {
 					//file.create(new ByteArrayInputStream(diagram.getBytes("UTF-8")), 0, null);
 					InputStream content = file.getContents();
 					byte[] buffer = new byte[content.available()];
 					content.read(buffer, 0, content.available());
 					return new String(buffer);
+				} else if (file.getFileExtension().equals("md")) {
+					InputStream content = file.getContents();
+					byte[] buffer = new byte[content.available()];
+					content.read(buffer, 0, content.available());
+					String tmp =new String(Base64.encodeToString(buffer, 0));
+					tmp = tmp.replaceAll("\r", "\n\\");
+					String[] tmp2 = tmp.split("\n");
+					tmp =  "{data:";
+					for (int i=0; i<tmp2.length; ++i) {
+						tmp += "\'" + tmp2[i] + "\\n\'+\n";
+					}
+					tmp +=  "''}";
+					return tmp;
 				}
 			}
 		} catch (CoreException e) {
@@ -259,12 +324,12 @@ public class THttpProjectExplorerView implements IHttpView {
 
 	@Override
 	public String getUid() {
-		return "un"; // universal/default view
+		return "pe"; // universal/default view
 	}
 
 	@Override
 	public String getName() {
-		return "Common";
+		return "Project Explorer";
 	}
 
 	private String GetValue(String key, List<THttpGetKey> keys) {
@@ -276,6 +341,7 @@ public class THttpProjectExplorerView implements IHttpView {
 		return "";
 	}
 
+	// TOOD: Create resource manager
 	private String GetProjectsList() {
 		String result = "";
 		String comma = "";
@@ -314,7 +380,7 @@ public class THttpProjectExplorerView implements IHttpView {
 		}
 
 		if (res instanceof IFile) {
-			return GetFileResourcesList((IFile) res);
+			return "";
 		}
 
 		final IResource searchRes = res;
@@ -352,6 +418,13 @@ public class THttpProjectExplorerView implements IHttpView {
 			String isFolder = "false";
 			String isLazy = "false";
 			String extraInfo = "";
+
+			if (resource.isPhantom()) {
+				continue;
+			}
+			if (resource.isVirtual() || resource.isHidden()) {
+				continue;
+			}
 			if (resource instanceof IFolder) {
 				isFolder = "true";
 				isLazy = "true";
@@ -364,7 +437,7 @@ public class THttpProjectExplorerView implements IHttpView {
 				if (resource.getFileExtension().equals("umlsync")) {
 					extraInfo = ", 'addClass' : 'diagramclass'";
 				} else {
-					isLazy = "true"; // File could provide more information about classes
+					//isLazy = "true"; // File could provide more information about classes
 					extraInfo = ", 'addClass' : 'cfile'";
 				}
 			}
@@ -375,50 +448,7 @@ public class THttpProjectExplorerView implements IHttpView {
 
 		return result;
 	}
-	private String GetFileResourcesList(IFile res) {
-		String result = "";
-		ICModel cModel= CoreModel.getDefault().getCModel();
-		final List<ICElement> components = new ArrayList<ICElement>();
-		final ICProject proj = CoreModel.getDefault().getCModel().getCProject(res.getProject().getName());
-		try {
-			final ICElement elem = proj.findElement(res.getLocation());
-			elem.accept(new ICElementVisitor() {
-
-				@Override
-				public boolean visit(ICElement element) throws CoreException {
-					if (element != elem) {
-						components.add(element);
-						return false;
-					}					
-					return true;
-				}} );
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String name = "";
-		String comma = "";
-		for (ICElement c: components) {
-			if (c instanceof Structure) {
-				Structure s = (Structure)c;
-				try {
-					IMethodDeclaration[] methods = s.getMethods();
-					for (IMethodDeclaration m : methods) {
-						String sig = m.getSignature();
-						sig += m.getReturnType();
-						String ret = sig;
-					}
-				} catch (CModelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				name += comma + "{'isLazy': false, 'isFolder' : false, 'title': '" +  c.getElementName() + "', 'addClass': 'iconclass'}";
-				comma = ",";
-			}
-		}
-		return name;
-	}
-
+	
 	public String GetList(List<THttpGetKey> keys) {
 		String path = GetValue("path", keys);
 		String result = "[";
@@ -447,7 +477,7 @@ public class THttpProjectExplorerView implements IHttpView {
 		String[] splitedPath = path.split("/");
 		IProject project = null;
 		String subpath = "";
-		if (splitedPath.length == 0) {
+		if (splitedPath.length == 1) {
 			project = ResourcesPlugin.getWorkspace().getRoot().getProject(path);
 
 		} else {
@@ -460,16 +490,30 @@ public class THttpProjectExplorerView implements IHttpView {
 		}
 		
 		 
-		IResource file = project.findMember(path.substring(splitedPath[0].length() +1));
+		IResource file = null;
+		if (splitedPath.length > 1) {
+		  file = project.findMember(path.substring(splitedPath[0].length() + 1));
+		} else {
+	      file = project.findMember(key);
+		}
 		
 		try {
 			if (file instanceof IFolder) {
 				IFolder folder = (IFolder) file;
 				if (folder.exists()) {
-					IFolder fff = project.getFolder(subpath + key);
+					IFolder fff = project.getFolder(subpath + "/"+ key);
 					if (!fff.exists()) {
 						fff.create(true, true, null);
 					}
+				}
+			} else {
+				if (file == null) {
+				  IFolder fff = project.getFolder(key);
+				  if (!fff.exists()) {
+					  fff.create(true, true, null);
+				  }
+				} else {
+					throw new Exception("Path " + path + "/" + key + " already exist.");
 				}
 			}
 				
@@ -479,7 +523,7 @@ public class THttpProjectExplorerView implements IHttpView {
 			e.printStackTrace();
 		}
 
-		return "";
+		return "{'isFs':true,'isFolder':true,'isLazy':true,'addClass':'cfolder','title':'"+key+"'}";
 	}
 
 }

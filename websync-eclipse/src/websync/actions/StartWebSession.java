@@ -16,7 +16,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import websync.http.handlers.IndexDatabaseHandler;
 import websync.http.handlers.JSONPHandler;
 import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.IHttpViewManager;
@@ -72,8 +71,6 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 			server = HttpServer.create(new InetSocketAddress("localhost", 8000), 10);
 
 			DefaultView = new THttpProjectExplorerView(this);
-			new THttpCdtProjectsViewer(this);
-			new THttpJavaProjectView(this);
 			
 			for (IHttpView v : views) {
 				for (THttpCapability c : v.GetCapabilitis()) {
@@ -85,30 +82,7 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 			// vm/%viewid%/getcapabilities - view capabilities TBD
 			// vm/cp/newfolder   - new folder creation
 			server.createContext("/vm/getviews", new ViewManager());
-			server.createContext("/vm/cp/getcapabilities", new ViewManager()); // stub. TODO add some meaning
-			server.createContext("/vm/un/getcapabilities", new ViewManager()); // stub. TODO add some meaning
-			server.createContext("/vm/java/getcapabilities", new ViewManager()); // stub. TODO add some meaning
-			//server.createContext("/vm/cp/getlist", new ProjectsHandler());
-			//server.createContext("/vm/cp/save", new SaveHandler());
-			//server.createContext("/vm/cp/open", new RestoreHandler());
-			//server.createContext("/vm/cp/getdiagram", new RestoreHandler());
-			
-			// Based on TranslationUnit abstraction
-			// vm/cp/db/class/methods {'md':s_key[1], 'attr':m1[1], 'ret':m1[2], 'args':m1[3]}
-			// vm/cp/db/class/getbase
-			// vm/cp/db/class/nested
-			//server.createContext("/vm/cp/db/class/methods", new IndexHandler(IndexHandler.REQUEST_CLASS_INFO));			
-			//server.createContext("/vm/cp/db/class/getbase", new IndexHandler(IndexHandler.REQUEST_CLASS_BASE));
-			//server.createContext("/vm/cp/db/class/nested", new IndexHandler(IndexHandler.REQUEST_CLASS_NESTED));
-			
-			// Based on Indexer functionality
-			// vm/cp/db/class/realization
-			server.createContext("/vm/cp/db/class/realization", new IndexDatabaseHandler());
-			// Not implemented yet
-			// vm/cp/db/class/friends
-			// vm/cp/db/class/association
-			// vm/cp/db/class/aggregation
-
+			server.createContext("/vm/pe/getcapabilities", new ViewManager()); // stub. TODO add some meaning
 			
 	        server.start();
 		} catch (IOException e) {

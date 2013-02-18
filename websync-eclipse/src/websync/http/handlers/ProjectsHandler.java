@@ -1,36 +1,20 @@
 package websync.http.handlers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.eclipse.osgi.framework.util.Headers;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.CoreException;
-
-import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.model.CModelException;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.core.model.ICElementVisitor;
-import org.eclipse.cdt.core.model.ICModel;
-import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.core.model.IIncludeEntry;
-import org.eclipse.cdt.core.model.IMethodDeclaration;
-import org.eclipse.core.runtime.IPath;
-
-import org.eclipse.cdt.internal.core.model.Structure;
 
 public class ProjectsHandler implements HttpHandler {
 
@@ -124,9 +108,6 @@ public class ProjectsHandler implements HttpHandler {
 					
 					String resourceName = resource.getFullPath().toString().substring(1);
 					if (resourceName.equals(searchPath)) {
-						if (resource instanceof IFile) {
-							ss.add(GetClassFile(resource.getLocation(), projectName));
-						}
 						return true;
 					}
 
@@ -178,50 +159,4 @@ public class ProjectsHandler implements HttpHandler {
 		result += "]";
 		return result;
 	}
-	
-	@SuppressWarnings("restriction")
-	public String GetClassFile(IPath path, String project)
-	{
-		ICModel cModel= CoreModel.getDefault().getCModel();
-		final List<ICElement> components = new ArrayList<ICElement>();
-		final ICProject proj = CoreModel.getDefault().getCModel().getCProject(project);
-		try {
-			final ICElement elem = proj.findElement(path);
-			elem.accept(new ICElementVisitor() {
-
-				@Override
-				public boolean visit(ICElement element) throws CoreException {
-					if (element != elem) {
-						components.add(element);
-						return false;
-					}					
-					return true;
-				}} );
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String name = "";
-		String comma = "";
-		for (ICElement c: components) {
-			if (c instanceof Structure) {
-				Structure s = (Structure)c;
-				try {
-					IMethodDeclaration[] methods = s.getMethods();
-					for (IMethodDeclaration m : methods) {
-						String sig = m.getSignature();
-						sig += m.getReturnType();
-						String ret = sig;
-					}
-				} catch (CModelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			  name += comma + "{'isLazy': false, 'isFolder' : false, 'title': '" +  c.getElementName() + "', 'addClass': 'iconclass'}";
-			  comma = ",";
-			}
-		}
-		return name;
-	}
-
 }
