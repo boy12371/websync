@@ -1,15 +1,12 @@
 package websync.actions;
 
 import java.io.IOException;
-
-
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
@@ -17,19 +14,15 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.FileEditorInput;
 
-import websync.http.handlers.IndexDatabaseHandler;
 import websync.http.handlers.JSONPHandler;
 import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.IHttpViewManager;
 import websync.http.interfaces.uri.THttpCapability;
 import websync.http.interfaces.uri.THttpGetKey;
 
-import com.sun.net.httpserver.*;
-
-import org.eclipse.ui.part.FileEditorInput;
-
-import org.eclipse.ui.internal.ide.actions.*;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * Our sample action implements workbench action delegate.
@@ -148,7 +141,7 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 			
 			// Based on Indexer functionality
 			// vm/cp/db/class/realization
-			server.createContext("/vm/cp/db/class/realization", new IndexDatabaseHandler());
+			// server.createContext("/vm/cp/db/class/realization", new IndexDatabaseHandler());
 			// Not implemented yet
 			// vm/cp/db/class/friends
 			// vm/cp/db/class/association
