@@ -9,7 +9,6 @@ import java.util.List;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.net.URLDecoder;
 
@@ -33,11 +32,6 @@ public class JSONPHandler implements HttpHandler {
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 		String response = "";
-
-		// TODO: Do not forget to add validation of host name !!!
-		// InetSocketAddress sddr = t.getRemoteAddress();
-		// sddr.getHostName()
-
 		try {
 			CheckRequest(t);
 			// Clone list of capability arguments

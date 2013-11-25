@@ -38,4 +38,5 @@ public interface IHttpViewManager {
 	public String remove(List<THttpGetKey> keys) throws Exception;
 	public String newfolder(List<THttpGetKey> keys) throws Exception;
 	String open(IFile file) throws Exception;
+	String file(List<THttpGetKey> keys) throws Exception;
 }

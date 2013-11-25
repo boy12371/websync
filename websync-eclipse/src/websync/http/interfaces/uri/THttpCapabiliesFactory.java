@@ -46,7 +46,7 @@ public class THttpCapabiliesFactory {
 		  return capability;
 	}
 	public static final THttpCapability VIEW_OPEN_FILE(ICapabilityHandler t) {
-		  THttpCapability capability = new THttpCapability("openfile", GetPathArguments());
+		  THttpCapability capability = new THttpCapability("file", GetPathArguments());
 		  capability.SetHandler(t);
 		  return capability;
 	}
