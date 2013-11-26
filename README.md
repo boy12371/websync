@@ -203,7 +203,7 @@ key| String | __Required__ the name of class
 path| String | __Optional__ the path to the file which class belong to
 package| String | __Optional__ the package which class belong to (for Java classes)
 
-If path or package not defined then return all possible results
+Note: If path or package not defined then return all possible results
 
 
 __Response__
@@ -231,4 +231,39 @@ fields| Field | __Required__ the list of fields
 
 
 
+=====
+####Get calss dependecies
+
+
+This method returns the dependensies for a given class:
+
+    GET /vm/:id/db/class/base|generalization|nested|association|aggregation|composition|friend
+
+
+__Parameters__
+
+Name | Type | Description 
+-----|------|--------------
+key| String | __Required__ the name of class
+path| String | __Optional__ the path to the file which class belong to
+package| String | __Optional__ the package which class belong to (for Java classes)
+
+Note: It could take a lot of time to extract all possible dependencies. 
+      Therefore user have to select file or package first in case of multiple results. Otherwise error should be result
+
+__Response__
+
+    {   name: "IContext",
+        filepath: "/Project/folder/IContext.h", 
+        base:[
+        {  name: "IBaseContext",
+           filepath: "/Project/interfaces/IBaseContext.h", 
+        }]
+    }
      
+Name | Type | Description 
+-----|------|--------------
+name| String | __Required__ the name of class
+filepath or package| String | __Required__ the package name or filepath
+%dependency type%| ClassInfo | __Required__ the list of matched classes
+
