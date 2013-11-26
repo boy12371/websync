@@ -14,7 +14,7 @@ It is quite similar to the Eclipse DStore (see ["RSE DStore Developer Guide"](ht
 The first integration of WebSync interface will be done for UmlSync project.
 
 ===
-###View API:
+###Views API:
 
 For the Eclipse-like tools special view abstraction was created. The view is like an Eclipse view:  "Project explorer", "Package explorer" etc
 
@@ -41,7 +41,12 @@ __Response__
     {'id':'java', 'title': 'Java Explorer', 'description':'View for JAVA source code navigation and diagrams managment.'},
     {'id':'un', 'title': 'Projects Explorer', 'description':'View for source code navigation and diagrams managment.', 'isdefault':true}
 
-
+Name | Type | Description 
+-----|------|--------------
+id| String | __Required__ unique id of the view
+title| String | __Required__ the title of view
+default| bool | __Optional__ indicates that view should be opened by default
+description| String | __Optional__ the description of view
 
 =====
 ####Get view capabilities
@@ -155,4 +160,75 @@ __Response__
 
         [None]
 
+=====
+####New folder
+
+This method create a new folder for existing path:
+
+    GET /vm/:id/newfolder
+
+__Parameters__
+
+Name | Type | Description 
+-----|------|--------------
+path| String | __Required__  path to the new folder resource (including a new folder name)
+
+__Response__
+
+        [None]
+
         
+
+
+===
+###Indexer database API:
+
+The source code index database functionality is view specific. Therefore user have to avail to ask C++ indexer about Java classes or packages.
+
+In an ideal case the "C/C++ explorer" should not provide an access to Java projects etc. 
+
+=====
+####Get calss information
+
+
+This method returns an information about class (or it's methods or it's fields):
+
+    GET /vm/:id/db/class/info|methods|fields
+    
+__Parameters__
+
+Name | Type | Description 
+-----|------|--------------
+key| String | __Required__ the name of class
+path| String | __Optional__ the path to the file which class belong to
+package| String | __Optional__ the package which class belong to (for Java classes)
+
+If path or package not defined then return all possible results
+
+
+__Response__
+
+    [{  name: "IContext",
+        attr: 0x001,
+        filepath: "/Project/folder/IContext.h", 
+        methods:[{attr: 0x001, name: "method1", arguments:"int x1, bool x2", return: "void"},
+        {attr: 0x001, name: "method2", arguments:"int x1, bool x2", return: "void"}],
+        fields:[{attr: 0x001, name:"field1", type:"void*"}]
+    },
+    {  name: "IContext",
+       filepath: "/Project/interfaces/IContext.h", 
+       ...
+    }]
+     
+Name | Type | Description 
+-----|------|--------------
+attr| int | __Required__ the visibility attributes according to [SourceNavigator's classification ](http://sourceforge.net/p/sourcenav/code/HEAD/tree/trunk/snavigator/hyper/sn.h)
+name| String | __Required__ the name of class
+filepath or package| String | __Required__ the package name or filepath
+methods| Method | __Required__ the list of methods
+fields| Field | __Required__ the list of fields
+
+
+
+
+     
