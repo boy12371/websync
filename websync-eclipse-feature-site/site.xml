@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/websync_eclipse_feature_1.2.0.201311261719.jar" id="websync_eclipse_feature" version="1.2.0.201311261719"/>
+</site>

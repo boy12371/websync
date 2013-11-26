@@ -1,19 +1,10 @@
 package websync.actions;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.cdt.core.model.CModelException;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.core.model.ICElementVisitor;
-import org.eclipse.cdt.core.model.ICModel;
-import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.cdt.core.model.IMethodDeclaration;
-import org.eclipse.cdt.internal.core.model.Structure;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -28,8 +19,8 @@ import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.IHttpViewManager;
 import websync.http.interfaces.uri.THttpCapabiliesFactory;
 import websync.http.interfaces.uri.THttpCapability;
-import websync.http.interfaces.uri.THttpGetKey;
 import websync.http.interfaces.uri.THttpCapability.ICapabilityHandler;
+import websync.http.interfaces.uri.THttpGetKey;
 import websync.utils.Base64;
 
 public class THttpProjectExplorerView implements IHttpView {
@@ -376,10 +367,6 @@ public class THttpProjectExplorerView implements IHttpView {
 			res = project.findMember(subpath);
 		}
 
-		if (res instanceof IFile) {
-			return GetFileResourcesList((IFile) res);
-		}
-
 		final IResource searchRes = res;
 		final List<IResource> resources = new ArrayList<IResource>();
 		try {
@@ -427,7 +414,7 @@ public class THttpProjectExplorerView implements IHttpView {
 				if (resource.getFileExtension().equals("umlsync")) {
 					extraInfo = ", 'addClass' : 'diagramclass'";
 				} else {
-					isLazy = "true"; // File could provide more information about classes
+					//isLazy = "true"; // File could provide more information about classes
 					extraInfo = ", 'addClass' : 'cfile'";
 				}
 			}
@@ -437,49 +424,6 @@ public class THttpProjectExplorerView implements IHttpView {
 		}
 
 		return result;
-	}
-	private String GetFileResourcesList(IFile res) {
-		String result = "";
-		ICModel cModel= CoreModel.getDefault().getCModel();
-		final List<ICElement> components = new ArrayList<ICElement>();
-		final ICProject proj = CoreModel.getDefault().getCModel().getCProject(res.getProject().getName());
-		try {
-			final ICElement elem = proj.findElement(res.getLocation());
-			elem.accept(new ICElementVisitor() {
-
-				@Override
-				public boolean visit(ICElement element) throws CoreException {
-					if (element != elem) {
-						components.add(element);
-						return false;
-					}					
-					return true;
-				}} );
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String name = "";
-		String comma = "";
-		for (ICElement c: components) {
-			if (c instanceof Structure) {
-				Structure s = (Structure)c;
-				try {
-					IMethodDeclaration[] methods = s.getMethods();
-					for (IMethodDeclaration m : methods) {
-						String sig = m.getSignature();
-						sig += m.getReturnType();
-						String ret = sig;
-					}
-				} catch (CModelException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				name += comma + "{'isLazy': false, 'isFolder' : false, 'title': '" +  c.getElementName() + "', 'addClass': 'iconclass'}";
-				comma = ",";
-			}
-		}
-		return name;
 	}
 
 	public String GetList(List<THttpGetKey> keys) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="websync_eclipse_feature"
+      label="Websync plug-in for Eclipse"
+      version="1.2.0.qualifier">
+
+   <description url="http://www.umlsync.org/features/websync.html">
+      [WebSync HTTP API for the localhost content access.]
+   </description>
+
+   <copyright url="http://www.umlsync.org/features/websync_license.html">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.umlsync.org/features/websync_license.html">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <discovery label="The latest update for WebSync plug-in" url="http://umlsync.org/eclipse/update"/>
+      <discovery label="WebSync page on GitHub" url="http://umlsynco.github.io/eclipse/update/site.xml"/>
+   </url>
+
+   <plugin
+         id="websync"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

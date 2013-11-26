@@ -225,8 +225,6 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 	/**
 	 * Support for showing a Busy Cursor during a long running process.
 	 *
-	 * @see <a href="file:///C:/Users/aea301/Desktop/Diagrammer/trunk/diagrammer/index2.html">BusyIndicator snippets</a>
-	 * @see <a href="file:///C:/Users/aea301/Desktop/Diagrammer/trunk/diagrammer/canvas.html">Sample code and further information</a>
 	 */
 	@Override
 	public String open(IFile file) throws Exception {

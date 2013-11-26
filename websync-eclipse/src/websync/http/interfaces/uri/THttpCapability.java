@@ -1,11 +1,9 @@
 package websync.http.interfaces.uri;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import websync.http.interfaces.IHttpView;
-import websync.http.interfaces.uri.THttpCapability.ICapabilityHandler;
 
 public class THttpCapability {
 	public interface ICapabilityHandler {

@@ -3,22 +3,16 @@ package websync.http.handlers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
+import java.net.URLDecoder;
 import java.util.List;
-
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
-import java.net.URLDecoder;
-import java.net.URLDecoder;
-
-
-import java.net.URLDecoder;
 
 import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.uri.THttpCapability;
 import websync.http.interfaces.uri.THttpGetKey;
 import websync.http.interfaces.uri.THttpKeysFactory;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 public class JSONPHandler implements HttpHandler {
 	private IHttpView view;
