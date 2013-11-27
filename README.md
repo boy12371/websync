@@ -2,7 +2,7 @@ WebSync
 =======
 
 WebSync is an open HTTP interface for synchronization of web applicaiton with client's file system
-or source code editor applications like Eclipse, NetBeans, SourceNavigator etc.
+through the source code editor applications like Eclipse, NetBeans, SourceNavigator etc.
 
 It is quite similar to the Eclipse DStore (see ["RSE DStore Developer Guide"](http://help.eclipse.org/indigo/index.jsp?nav=%2F52) ) except SSL support and provides the following functionality:
 
