@@ -31,7 +31,8 @@ public interface IHttpViewManager {
  	public final static int PAF_OVERRIDE = 0x20000;
  	public final static int PAF_OVERLOADED = 0x40000;
 
-	public void registerView(IHttpView v);
+    public void registerView(IHttpView v);
+ 	
 	public String getDiagramFileExtension();
 	public String save(List<THttpGetKey> keys) throws Exception;
 	public String open(List<THttpGetKey> keys) throws Exception;
@@ -39,4 +40,6 @@ public interface IHttpViewManager {
 	public String newfolder(List<THttpGetKey> keys) throws Exception;
 	String open(IFile file) throws Exception;
 	String file(List<THttpGetKey> keys) throws Exception;
+
+	void registerExternalView(IHttpView view);
 }

@@ -10,4 +10,5 @@ public interface IHttpView {
 	public String ProcessRequest(THttpCapability capability, List<THttpGetKey> keys) throws Exception;
 	public String getUid();
 	public String getName();
+	void Init(IHttpViewManager vm);
 }

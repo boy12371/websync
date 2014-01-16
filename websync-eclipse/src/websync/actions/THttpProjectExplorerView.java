@@ -26,7 +26,11 @@ import websync.utils.Base64;
 public class THttpProjectExplorerView implements IHttpView {
 
 	private IHttpViewManager ViewManager = null;
-	public THttpProjectExplorerView(IHttpViewManager vm) {
+	public THttpProjectExplorerView() {
+	}
+
+	@Override
+	public void Init(IHttpViewManager vm) {
 		ViewManager = vm;
 		ViewManager.registerView(this);
 	}
@@ -502,5 +506,4 @@ public class THttpProjectExplorerView implements IHttpView {
 
 		return "{'isFs':true,'isLazy':true,'addClass':'cfolder','title':'"+key+"'}";
 	}
-
 }

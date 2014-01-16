@@ -23,6 +23,7 @@ public class WebsyncDialog extends TitleAreaDialog {
 	private String secret;
 	private Button stopButton;
 	private boolean isClose = false;
+	private int port = 8000;
 
 	public WebsyncDialog(Shell parentShell) {
 		super(parentShell);
@@ -113,7 +114,10 @@ public class WebsyncDialog extends TitleAreaDialog {
 	// save content of the Text fields because they get disposed
 	// as soon as the Dialog closes
 	private void saveInput() {
-		host = hostAddress.getText();
+		String hap = hostAddress.getText();
+		String[] hp = hap.split(":");
+		host = hp[0];
+		port = Integer.parseInt(hp[1]);
 		secret = secretKey.getText();
 	}
 
@@ -132,6 +136,6 @@ public class WebsyncDialog extends TitleAreaDialog {
 	}
 
 	public int getPort() {
-		return 8000;
+		return port;
 	}
 }

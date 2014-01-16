@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorDescriptor;
@@ -16,6 +17,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
+import websync.EvaluateContributionsHandler;
 import websync.http.handlers.JSONPHandler;
 import websync.http.interfaces.IHttpView;
 import websync.http.interfaces.IHttpViewManager;
@@ -35,7 +37,7 @@ import com.sun.net.httpserver.HttpServer;
 public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpViewManager {
 
 
-	private List<IHttpView> views = new ArrayList<IHttpView>(); 
+	private static List<IHttpView> views = new ArrayList<IHttpView>(); 
 	private IWorkbenchWindow window;
 	private THttpProjectExplorerView DefaultView;
 
@@ -44,6 +46,8 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 	private String host;
 	private int port;
 	private String secret;
+	
+	EvaluateContributionsHandler extensions = new EvaluateContributionsHandler();
 
 	/**
 	 * The constructor.
@@ -56,6 +60,11 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 		views.add(view);
 	}
 
+	@Override
+	public void registerExternalView(IHttpView view) {
+		views.add(view);
+	}
+	
 	@Override
 	public String getDiagramFileExtension() {
 		return ".umlsync";
@@ -103,7 +112,6 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 		try {
 			server = HttpServer.create(new InetSocketAddress(host, port), 10);
 
-			DefaultView = new THttpProjectExplorerView(this);
 			// no Java or C++ view for a while
 			//new THttpCdtProjectsViewer(this);
 			//new THttpJavaProjectView(this);
@@ -180,6 +188,13 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 	 */
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
+		// Initialize the default project explorer view
+		DefaultView = new THttpProjectExplorerView();
+		DefaultView.Init(this);
+
+		// Update an extension list and initialize them
+		extensions.execute(Platform.getExtensionRegistry(), this);
+
 	}
 
 	@Override
@@ -198,11 +213,11 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 	}
 
 	
-	class RRR implements Runnable {
+	class FileOpener implements Runnable {
 
 		IWorkbenchPage Page;
 		IFile File;
-		RRR(IWorkbenchPage page, IFile file) {
+		FileOpener(IWorkbenchPage page, IFile file) {
 			File = file;
 			Page = page;
 		}
@@ -244,7 +259,7 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 		}
 */
 
-		window.getWorkbench().getDisplay().asyncExec(new RRR(page2, file));
+		window.getWorkbench().getDisplay().asyncExec(new FileOpener(page2, file));
 		
 		return "";
 	}
