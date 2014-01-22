@@ -212,7 +212,7 @@ public class THttpCdtProjectsViewer implements IHttpView {
 		String comma = "";
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (int i=0; i<projects.length; ++i) {
-			result += comma + "{'isLazy': true, 'isFs': true, 'title': '" +  projects[i].getName() + "', 'addClass':'cproject'}";
+			result += comma + "{'isLazy': true, 'isFs': true, 'isFolder': true, 'title': '" +  projects[i].getName() + "', 'addClass':'cproject'}";
 			comma = ",";
 		}		
 		return result;
@@ -288,7 +288,7 @@ public class THttpCdtProjectsViewer implements IHttpView {
 				}
 			}
 			// 'isFolder' : " + isFolder + 
-			result += comma + "{'isLazy': " + isLazy + ", 'isFs':true, 'title': '" +  resource.getName() + "'"+extraInfo+"}";
+			result += comma + "{'isLazy': " + isLazy + ", 'isFolder':"+isFolder+", 'isFs':true, 'title': '" +  resource.getName() + "'"+extraInfo+"}";
 			comma = ",";
 
 		}
