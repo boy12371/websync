@@ -21,11 +21,18 @@
       <discovery label="WebSync page on GitHub" url="http://umlsynco.github.io/eclipse/update/site.xml"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
+
    <plugin
          id="websync"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.2.0.qualifier"
          unpack="false"/>
 
 </feature>

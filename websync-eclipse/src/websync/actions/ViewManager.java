@@ -2,10 +2,40 @@ package websync.actions;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.List;
+
+import websync.http.interfaces.IHttpView;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 public class ViewManager implements HttpHandler {
+	String availableViews = null;
+
+	public ViewManager(List<IHttpView> views) {
+		Iterator<IHttpView> vi = views.iterator();
+		availableViews = "[";
+		
+		while (vi.hasNext()) {
+			IHttpView view = vi.next();;
+			if (view != null) {
+				availableViews += "{'id':'"+view.getUid() + "', 'title': '" + view.getTitle() + "', 'description':'" + view.getDescription();
+				// The latest registered view should be default
+				if (vi.hasNext()) {
+					availableViews = availableViews + "', 'isdefault': false},"; 
+				}
+				else {
+					availableViews = availableViews + "', 'isdefault': true}"; // Do not set comma for the last view
+				}
+			}
+		}
+		availableViews =  availableViews + "]";
+		
+	//	"[{'id':'cp', 'title': 'C/C++ Explorer', 'description':'View for C/C++ source code navigation and diagrams managment.', 'isdefault':true},"
+		//		+"{'id':'java', 'title': 'Java Explorer', 'description':'View for JAVA source code navigation and diagrams managment.', 'isdefault':false},"
+			//	+"{'id':'un', 'title': 'Projects Explorer', 'description':'View for source code navigation and diagrams managment.', 'isdefault':false}]";
+		
+	}
 
 	@Override
 	public void handle(HttpExchange t) throws IOException {
@@ -44,9 +74,7 @@ public class ViewManager implements HttpHandler {
 	}
 
 	private String getViews() {
-		return "[{'id':'cp', 'title': 'C/C++ Explorer', 'description':'View for C/C++ source code navigation and diagrams managment.', 'isdefault':true},"
-				+"{'id':'java', 'title': 'Java Explorer', 'description':'View for JAVA source code navigation and diagrams managment.', 'isdefault':false},"
-				+"{'id':'un', 'title': 'Projects Explorer', 'description':'View for source code navigation and diagrams managment.', 'isdefault':false}]";
+		return availableViews;
 	}
 
 }

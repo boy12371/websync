@@ -320,11 +320,6 @@ public class THttpProjectExplorerView implements IHttpView {
 		return "un"; // universal/default view
 	}
 
-	@Override
-	public String getName() {
-		return "Common";
-	}
-
 	private String GetValue(String key, List<THttpGetKey> keys) {
 		for (THttpGetKey k : keys) {
 			if (k.Name.equals(key)) {
@@ -505,5 +500,17 @@ public class THttpProjectExplorerView implements IHttpView {
 		}
 
 		return "{'isFs':true,'isLazy':true,'addClass':'cfolder','title':'"+key+"'}";
+	}
+
+	@Override
+	public String getTitle() {
+		
+		return "Project Explorer";
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return "View for source code navigation and diagrams managment";
 	}
 }

@@ -126,7 +126,7 @@ public class StartWebSession implements IWorkbenchWindowActionDelegate, IHttpVie
 			// vm/getviews       - return the list of registered views
 			// vm/%viewid%/getcapabilities - view capabilities TBD
 			// vm/cp/newfolder   - new folder creation
-			server.createContext("/vm/getviews", new ViewManager());
+			server.createContext("/vm/getviews", new ViewManager(views));
 // postponed capabilities of each view for a while
 // Capabilities: indexing, open source code - file in the native editor, highlighted definition API etc(F3)
 //               the same capabilities should be requested from each project (It could be possible that index not available etc)

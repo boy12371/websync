@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/websync_eclipse_feature_1.2.0.201311261719.jar" id="websync_eclipse_feature" version="1.2.0.201311261719"/>
+   <feature url="features/websync_eclipse_feature_1.2.0.201402031530.jar" id="websync_eclipse_feature" version="1.2.0.201402031530">
+      <category name="WebSync"/>
+   </feature>
+   <feature url="features/websync_eclipse_cdt_feature_1.2.0.201402031530.jar" id="websync_eclipse_cdt_feature" version="1.2.0.201402031530">
+      <category name="WebSync"/>
+   </feature>
+   <category-def name="WebSync" label="WebSync">
+      <description>
+         Localhost service for remote access
+      </description>
+   </category-def>
 </site>

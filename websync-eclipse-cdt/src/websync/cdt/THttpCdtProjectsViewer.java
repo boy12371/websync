@@ -193,11 +193,6 @@ public class THttpCdtProjectsViewer implements IHttpView {
 		return "cp";
 	}
 
-	@Override
-	public String getName() {
-		return "C/C++";
-	}
-
 	private String GetValue(String key, List<THttpGetKey> keys) {
 		for (THttpGetKey k : keys) {
 			if (k.Name.equals(key)) {
@@ -554,6 +549,16 @@ public class THttpCdtProjectsViewer implements IHttpView {
 			}
 		}
 		return name + "]";
+	}
+
+	@Override
+	public String getTitle() {
+		return "C/C++ Explorer";
+	}
+
+	@Override
+	public String getDescription() {
+		return "View for C/C++ source code navigation and diagrams managment.";
 	}
 
 }

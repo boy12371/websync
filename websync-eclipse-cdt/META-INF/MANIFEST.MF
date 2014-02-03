@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Websync-eclipse-cdt
-Bundle-SymbolicName: websync-eclipse-cdt;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Websync_eclipse_cdt
+Bundle-SymbolicName: websync_eclipse_cdt;singleton:=true
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: UmlSync
 Require-Bundle: org.eclipse.core.runtime,
  websync;bundle-version="1.2.0",

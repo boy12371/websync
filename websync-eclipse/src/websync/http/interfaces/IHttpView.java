@@ -9,6 +9,7 @@ public interface IHttpView {
 	public List<THttpCapability> GetCapabilitis();
 	public String ProcessRequest(THttpCapability capability, List<THttpGetKey> keys) throws Exception;
 	public String getUid();
-	public String getName();
+	public String getTitle();
+	public String getDescription();
 	void Init(IHttpViewManager vm);
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="websync_eclipse_cdt_feature"
+      label="Websync_eclipse_cdt_feature"
+      version="1.2.0.qualifier">
+
+   <description url="http://github.com/UmlSync/websync">
+      WebSync plugin for an access from Web-application to the local clone of repository.
+   </description>
+
+   <copyright url="http://github.com/UmlSync/websync/LICENSE_GPLv2">
+      GPLv2
+   </copyright>
+
+   <license url="http://github.com/UmlSync/websync/LICENSE_GPLv2">
+      GPLv2
+   </license>
+
+   <url>
+      <discovery label="UmlSync" url="http://umlsync.org"/>
+      <discovery label="Diagram.IO for stable versions" url="http://diagram.io"/>
+   </url>
+
+   <includes
+         id="websync_eclipse_feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="websync" version="1.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+   </requires>
+
+   <plugin
+         id="websync_eclipse_cdt"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.qualifier"
+         unpack="false"/>
+
+</feature>
