@@ -1,4 +1,4 @@
-How to install WebSync Plugin
+### How to install WebSync Plugin
 
 1. Launch Eclipse
 2. Go to Help -> Install New Software…
@@ -9,7 +9,8 @@ How to install WebSync Plugin
 5. Select "Websync plug-in for Eclipse" - for tree naviagration and content managment (open/update/remove/add)
 6. Select "Websync_eclipse_cdt_feature" for CDT C++ indexing support (applicable for CDT only)
 
-How to use WebSync Plugin:
+### How to use WebSync Plugin:
+
 1. click on ![icon](./websync-eclipse/icons/sample.gif "icon")
 2. Select host and port (localhost by default)
 3. secure key(Last name): - some unique magic sequence for source verification
@@ -17,7 +18,8 @@ How to use WebSync Plugin:
 5. Click "Stop" to stop service
 6. "Cancel" - to cancel user actions
 
-How to sync Eclipse and umlsync.org
+### How to sync Eclipse and umlsync.org
+
 1. Open the umlsync.org/editor
 2. Click "Eclipse" on the left top corner (available for loged-in users only)
 3. Copy port/host and secret key from steps 2. and 3. above
